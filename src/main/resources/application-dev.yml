@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      master:
+        url: jdbc:mysql://192.168.1.254:3306/renren_fast?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+        username: root
+        password: shihuai1993A
+      cluster:
+        url: jdbc:mysql://192.168.1.254:3306/springboot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+        username: root
+        password: shihuai1993A
+  redis:
+    database: 0
+    host: 192.168.1.254
+    port: 6379
+    password:    # 密码（默认为空）
+
