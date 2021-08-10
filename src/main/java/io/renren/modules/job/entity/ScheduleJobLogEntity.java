@@ -11,6 +11,7 @@ package io.renren.modules.job.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.renren.common.base.BaseEntity;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 定时任务日志
@@ -18,6 +19,7 @@ import lombok.Data;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
+@Accessors(chain = true)
 @TableName("schedule_job_log")
 public class ScheduleJobLogEntity extends BaseEntity<ScheduleJobLogEntity> {
 	private static final long serialVersionUID = 1L;
