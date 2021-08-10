@@ -11,6 +11,7 @@ package io.renren.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.renren.common.base.BaseEntity;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -19,6 +20,7 @@ import lombok.Data;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
+@Accessors(chain = true)
 @TableName("sys_log")
 public class SysLogEntity extends BaseEntity<SysLogEntity> {
 	//用户名

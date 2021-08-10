@@ -8,24 +8,24 @@
 
 package io.renren.common.aspect;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.Gson;
 import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.HttpContextUtils;
 import io.renren.common.utils.IPUtils;
 import io.renren.modules.sys.entity.SysLogEntity;
 import io.renren.modules.sys.entity.SysUserEntity;
-import io.renren.modules.sys.service.SysLogService;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -36,9 +36,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class SysLogAspect {
-	@Autowired
-	private SysLogService sysLogService;
-	
+
 	@Pointcut("@annotation(io.renren.common.annotation.SysLog)")
 	public void logPointCut() { 
 		
@@ -46,14 +44,13 @@ public class SysLogAspect {
 
 	@Around("logPointCut()")
 	public Object around(ProceedingJoinPoint point) throws Throwable {
-		long beginTime = System.currentTimeMillis();
+		Stopwatch stopwatch = Stopwatch.createStarted();
 		//执行方法
 		Object result = point.proceed();
 		//执行时长(毫秒)
-		long time = System.currentTimeMillis() - beginTime;
-
+		stopwatch.stop();
 		//保存日志
-		saveSysLog(point, time);
+		this.saveSysLog(point, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
 		return result;
 	}
@@ -62,38 +59,36 @@ public class SysLogAspect {
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		Method method = signature.getMethod();
 
-		SysLogEntity sysLog = new SysLogEntity();
+		SysLogEntity logSave = new SysLogEntity();
 		SysLog syslog = method.getAnnotation(SysLog.class);
 		if(syslog != null){
 			//注解上的描述
-			sysLog.setOperation(syslog.value());
+			logSave.setOperation(syslog.value());
 		}
 
 		//请求的方法名
 		String className = joinPoint.getTarget().getClass().getName();
 		String methodName = signature.getName();
-		sysLog.setMethod(className + "." + methodName + "()");
+		logSave.setMethod(className + "." + methodName + "()");
 
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		try{
 			String params = new Gson().toJson(args);
-			sysLog.setParams(params);
+			logSave.setParams(params);
 		}catch (Exception e){
 
 		}
 
 		//获取request
 		HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
-		//设置IP地址
-		sysLog.setIp(IPUtils.getIpAddr(request));
-
 		//用户名
 		String username = ((SysUserEntity) SecurityUtils.getSubject().getPrincipal()).getUsername();
-		sysLog.setUsername(username);
-
-		sysLog.setTime(time);
+		//设置IP地址
+		logSave.setIp(IPUtils.getIpAddr(request))
+				.setUsername(username)
+				.setTime(time);
 		//保存系统日志
-		sysLogService.save(sysLog);
+		logSave.insert();
 	}
 }
