@@ -39,6 +39,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 			throw new RRException("手机号或密码错误");
 		}
 
-		return user.getUserId();
+		return user.getId();
 	}
 }

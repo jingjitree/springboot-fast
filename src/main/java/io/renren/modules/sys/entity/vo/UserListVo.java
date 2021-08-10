@@ -13,6 +13,6 @@ public class UserListVo extends BasePageVo {
     private String username;
 
     @JsonIgnore
-    private Long createUserId;
+    private Integer createUserId;
 
 }

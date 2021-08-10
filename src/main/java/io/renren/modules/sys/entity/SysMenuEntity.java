@@ -9,11 +9,10 @@
 package io.renren.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.renren.common.base.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,19 +22,12 @@ import java.util.List;
  */
 @Data
 @TableName("sys_menu")
-public class SysMenuEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 菜单ID
-	 */
-	@TableId
-	private Long menuId;
+public class SysMenuEntity extends BaseEntity<SysMenuEntity> {
 
 	/**
 	 * 父菜单ID，一级菜单为0
 	 */
-	private Long parentId;
+	private Integer parentId;
 	
 	/**
 	 * 父菜单名称
@@ -76,10 +68,10 @@ public class SysMenuEntity implements Serializable {
 	/**
 	 * ztree属性
 	 */
-	@TableField(exist=false)
+	@TableField(exist = false)
 	private Boolean open;
 
-	@TableField(exist=false)
+	@TableField(exist = false)
 	private List<?> list;
 
 }

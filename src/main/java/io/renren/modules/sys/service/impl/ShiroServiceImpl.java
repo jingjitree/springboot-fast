@@ -32,7 +32,7 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     @Cacheable(key = "'sysUserEntity:' + #p0")
-    public Set<String> getUserPermissions(long userId) {
+    public Set<String> getUserPermissions(Integer userId) {
         List<String> permsList;
 
         //系统管理员，拥有最高权限
@@ -57,7 +57,7 @@ public class ShiroServiceImpl implements ShiroService {
     }
 
     @Override
-    public SysUserEntity queryUser(Long userId) {
+    public SysUserEntity queryUser(Integer userId) {
         return sysUserDao.selectById(userId);
     }
 }

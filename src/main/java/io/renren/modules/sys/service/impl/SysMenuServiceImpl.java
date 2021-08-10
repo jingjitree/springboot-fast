@@ -10,6 +10,7 @@ package io.renren.modules.sys.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import io.renren.common.constant.Constant;
 import io.renren.common.utils.MapUtils;
 import io.renren.modules.sys.dao.SysMenuDao;
@@ -32,7 +33,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	private SysRoleMenuService sysRoleMenuService;
 	
 	@Override
-	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
+	public List<SysMenuEntity> queryListParentId(Integer parentId, List<Integer> menuIdList) {
 		List<SysMenuEntity> menuList = queryListParentId(parentId);
 		if(menuIdList == null){
 			return menuList;
@@ -40,7 +41,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		
 		List<SysMenuEntity> userMenuList = new ArrayList<>();
 		for(SysMenuEntity menu : menuList){
-			if(menuIdList.contains(menu.getMenuId())){
+			if(menuIdList.contains(menu.getId())){
 				userMenuList.add(menu);
 			}
 		}
@@ -48,7 +49,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntity> queryListParentId(Long parentId) {
+	public List<SysMenuEntity> queryListParentId(Integer parentId) {
 		return baseMapper.queryListParentId(parentId);
 	}
 
@@ -58,19 +59,19 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntity> getUserMenuList(Long userId) {
+	public List<SysMenuEntity> getUserMenuList(Integer userId) {
 		//系统管理员，拥有最高权限
 		if(userId == Constant.SUPER_ADMIN){
 			return getAllMenuList(null);
 		}
 		
 		//用户菜单列表
-		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+		List<Integer> menuIdList = sysUserService.queryAllMenuId(userId);
 		return getAllMenuList(menuIdList);
 	}
 
 	@Override
-	public void delete(Long menuId){
+	public void delete(Integer menuId){
 		//删除菜单
 		this.removeById(menuId);
 		//删除菜单与角色关联
@@ -80,9 +81,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	/**
 	 * 获取所有菜单列表
 	 */
-	private List<SysMenuEntity> getAllMenuList(List<Long> menuIdList){
+	private List<SysMenuEntity> getAllMenuList(List<Integer> menuIdList){
 		//查询根菜单列表
-		List<SysMenuEntity> menuList = queryListParentId(0L, menuIdList);
+		List<SysMenuEntity> menuList = queryListParentId(0, menuIdList);
 		//递归获取子菜单
 		getMenuTreeList(menuList, menuIdList);
 		
@@ -92,13 +93,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	/**
 	 * 递归
 	 */
-	private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Long> menuIdList){
-		List<SysMenuEntity> subMenuList = new ArrayList<SysMenuEntity>();
+	private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Integer> menuIdList){
+		List<SysMenuEntity> subMenuList = Lists.newArrayList();
 		
 		for(SysMenuEntity entity : menuList){
 			//目录
 			if(entity.getType() == Constant.MenuType.CATALOG.getValue()){
-				entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
+				entity.setList(getMenuTreeList(queryListParentId(entity.getId(), menuIdList), menuIdList));
 			}
 			subMenuList.add(entity);
 		}

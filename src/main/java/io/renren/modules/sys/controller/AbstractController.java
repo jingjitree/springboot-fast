@@ -27,8 +27,8 @@ public abstract class AbstractController {
 		return (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
 	}
 
-	protected Long getUserId() {
-		return getUser().getUserId();
+	protected Integer getUserId() {
+		return getUser().getId();
 	}
 
 	protected final Gson gson = new GsonBuilder().create();

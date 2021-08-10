@@ -52,7 +52,7 @@ public class SysRoleController extends AbstractController {
 	@RequiresPermissions("sys:role:list")
 	public CommonPageResult<List<SysRoleEntity>> list(@RequestBody RoleListVo vo){
 		SysUserEntity user = getUser();
-		Long userId = user.getUserId();
+		Integer userId = user.getId();
 		//如果不是超级管理员，则只查询自己创建的角色列表
 		if(userId != Constant.SUPER_ADMIN){
 			vo.setCreateUserId(userId);
@@ -73,7 +73,7 @@ public class SysRoleController extends AbstractController {
 		if(getUserId() != Constant.SUPER_ADMIN){
 			map.put("create_user_id", getUserId());
 		}
-		List<SysRoleEntity> list = (List<SysRoleEntity>) sysRoleService.listByMap(map);
+		List<SysRoleEntity> list = sysRoleService.listByMap(map);
 		
 		return CommonResult.success(MapUtil.of("list", list));
 	}
@@ -83,11 +83,11 @@ public class SysRoleController extends AbstractController {
 	 */
 	@GetMapping("/info/{roleId}")
 	@RequiresPermissions("sys:role:info")
-	public CommonResult<Map<String, Object>> info(@PathVariable("roleId") Long roleId){
+	public CommonResult<Map<String, Object>> info(@PathVariable("roleId") Integer roleId){
 		SysRoleEntity role = sysRoleService.getById(roleId);
 		
 		//查询角色对应的菜单
-		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
+		List<Integer> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
 		role.setMenuIdList(menuIdList);
 		
 		return CommonResult.success(MapUtil.of("role", role));
@@ -129,7 +129,7 @@ public class SysRoleController extends AbstractController {
 	@SysLog("删除角色")
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:role:delete")
-	public CommonResult<?> delete(@RequestBody Long[] roleIds){
+	public CommonResult<?> delete(@RequestBody Integer[] roleIds){
 		sysRoleService.deleteBatch(roleIds);
 		
 		return CommonResult.success();

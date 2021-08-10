@@ -8,12 +8,9 @@
 
 package io.renren.modules.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.renren.common.base.BaseEntity;
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -23,10 +20,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_log")
-public class SysLogEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-	@TableId
-	private Long id;
+public class SysLogEntity extends BaseEntity<SysLogEntity> {
 	//用户名
 	private String username;
 	//用户操作
@@ -39,7 +33,5 @@ public class SysLogEntity implements Serializable {
 	private Long time;
 	//IP地址
 	private String ip;
-	//创建时间
-	private Date createDate;
 
 }

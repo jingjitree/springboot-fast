@@ -10,7 +10,7 @@
 		</foreach>
 	</delete>
 
-	<select id="queryRoleIdList" resultType="long">
+	<select id="queryRoleIdList" resultType="int">
 		select role_id from sys_user_role where user_id = #{value}
 	</select>
 </mapper>

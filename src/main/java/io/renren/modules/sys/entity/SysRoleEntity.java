@@ -9,14 +9,11 @@
 package io.renren.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.renren.common.base.BaseEntity;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,14 +23,7 @@ import java.util.List;
  */
 @Data
 @TableName("sys_role")
-public class SysRoleEntity extends Model<SysRoleEntity> implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 角色ID
-	 */
-	@TableId
-	private Long roleId;
+public class SysRoleEntity extends BaseEntity<SysRoleEntity> {
 
 	/**
 	 * 角色名称
@@ -49,15 +39,10 @@ public class SysRoleEntity extends Model<SysRoleEntity> implements Serializable 
 	/**
 	 * 创建者ID
 	 */
-	private Long createUserId;
+	private Integer createUserId;
 
 	@TableField(exist=false)
-	private List<Long> menuIdList;
+	private List<Integer> menuIdList;
 	
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
 
-	
 }

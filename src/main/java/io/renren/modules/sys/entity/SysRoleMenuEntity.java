@@ -10,6 +10,7 @@ package io.renren.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.renren.common.base.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,20 +22,16 @@ import java.io.Serializable;
  */
 @Data
 @TableName("sys_role_menu")
-public class SysRoleMenuEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	@TableId
-	private Long id;
+public class SysRoleMenuEntity extends BaseEntity<SysRoleMenuEntity> {
 
 	/**
 	 * 角色ID
 	 */
-	private Long roleId;
+	private Integer roleId;
 
 	/**
 	 * 菜单ID
 	 */
-	private Long menuId;
+	private Integer menuId;
 	
 }

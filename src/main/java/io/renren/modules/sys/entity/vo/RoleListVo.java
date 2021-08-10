@@ -12,5 +12,5 @@ public class RoleListVo extends BasePageVo {
     private String roleName;
 
     @JsonIgnore
-    private Long createUserId;
+    private Integer createUserId;
 }

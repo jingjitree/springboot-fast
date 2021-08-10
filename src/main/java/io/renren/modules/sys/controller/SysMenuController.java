@@ -46,8 +46,8 @@ public class SysMenuController extends AbstractController {
 	public CommonResult<Map<String, Object>> nav(){
 		SysUserEntity user = getUser();
 		log.info("登录user：{}", gson.toJson(user));
-		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(user.getUserId());
-		Set<String> permissions = shiroService.getUserPermissions(user.getUserId());
+		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(user.getId());
+		Set<String> permissions = shiroService.getUserPermissions(user.getId());
 		//return R.ok().put("menuList", menuList).put("permissions", permissions);
 		Map<String, Object> result = MapUtil.builder(new HashMap<String, Object>())
 				.put("menuList", menuList)
@@ -65,7 +65,7 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:list")
 	public CommonResult<List<SysMenuEntity>> list(){
 		List<SysMenuEntity> menuList = sysMenuService.list();
-		Map<Long, SysMenuEntity> menuMap = menuList.stream().collect(Collectors.toMap(SysMenuEntity::getMenuId, v -> v));
+		Map<Integer, SysMenuEntity> menuMap = menuList.stream().collect(Collectors.toMap(SysMenuEntity::getId, v -> v));
 		for (SysMenuEntity s : menuList) {
 			SysMenuEntity parent = menuMap.get(s.getParentId());
 			if (Objects.nonNull(parent)) {
@@ -86,9 +86,9 @@ public class SysMenuController extends AbstractController {
 		
 		//添加顶级菜单
 		SysMenuEntity root = new SysMenuEntity();
-		root.setMenuId(0L);
+		root.setId(0);
 		root.setName("一级菜单");
-		root.setParentId(-1L);
+		root.setParentId(-1);
 		root.setOpen(true);
 		menuList.add(root);
 		
@@ -141,7 +141,7 @@ public class SysMenuController extends AbstractController {
 	@SysLog("删除菜单")
 	@PostMapping("/delete/{menuId}")
 	@RequiresPermissions("sys:menu:delete")
-	public CommonResult<?> delete(@PathVariable("menuId") long menuId){
+	public CommonResult<?> delete(@PathVariable("menuId") Integer menuId){
 		if(menuId <= 31){
 			return CommonResult.fail("系统菜单，不能删除");
 		}

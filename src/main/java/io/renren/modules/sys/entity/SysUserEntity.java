@@ -9,16 +9,14 @@
 package io.renren.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.renren.common.base.BaseEntity;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,14 +26,7 @@ import java.util.List;
  */
 @Data
 @TableName("sys_user")
-public class SysUserEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 用户ID
-	 */
-	@TableId
-	private Long userId;
+public class SysUserEntity extends BaseEntity<SysUserEntity> {
 
 	/**
 	 * 用户名
@@ -75,16 +66,11 @@ public class SysUserEntity implements Serializable {
 	 * 角色ID列表
 	 */
 	@TableField(exist=false)
-	private List<Long> roleIdList;
+	private List<Integer> roleIdList;
 
 	/**
 	 * 创建者ID
 	 */
-	private Long createUserId;
-
-	/**
-	 * 创建时间
-	 */
-	private Date createTime;
+	private Integer createUserId;
 
 }

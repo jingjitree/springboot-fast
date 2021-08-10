@@ -55,7 +55,7 @@ public class OAuth2Realm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SysUserEntity user = (SysUserEntity)principals.getPrimaryPrincipal();
-        Long userId = user.getUserId();
+        Integer userId = user.getId();
 
         //用户权限列表
         Set<String> permsSet = shiroService.getUserPermissions(userId);
@@ -83,7 +83,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         }
 
         //查询用户信息
-        SysUserEntity user = shiroService.queryUser(tokenEntity.getUserId());
+        SysUserEntity user = shiroService.queryUser(tokenEntity.getId());
         //账号锁定
         if(user.getStatus() == 0){
             throw new LockedAccountException("账号已被锁定,请联系管理员");

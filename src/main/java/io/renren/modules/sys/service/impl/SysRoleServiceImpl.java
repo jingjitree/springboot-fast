@@ -47,7 +47,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	@Override
 	public IPage<SysRoleEntity> queryPage(RoleListVo vo) {
 		String roleName = vo.getRoleName();
-		Long createUserId = vo.getCreateUserId();
+		Integer createUserId = vo.getCreateUserId();
 
 		Page<SysRoleEntity> pageParam = new Page<>(vo.getPage(), vo.getPageSize());
 
@@ -69,7 +69,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
         checkPrems(role);
 
         //保存角色与菜单关系
-        sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+        sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
     }
 
     @Override
@@ -81,12 +81,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
         checkPrems(role);
 
         //更新角色与菜单关系
-        sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+        sysRoleMenuService.saveOrUpdate(role.getId(), role.getMenuIdList());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteBatch(Long[] roleIds) {
+    public void deleteBatch(Integer[] roleIds) {
         //删除角色
         this.removeByIds(Arrays.asList(roleIds));
 
@@ -99,7 +99,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 
 
     @Override
-	public List<Long> queryRoleIdList(Long createUserId) {
+	public List<Long> queryRoleIdList(Integer createUserId) {
 		return baseMapper.queryRoleIdList(createUserId);
 	}
 
@@ -113,7 +113,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 		}
 		
 		//查询用户所拥有的菜单列表
-		List<Long> menuIdList = sysUserService.queryAllMenuId(role.getCreateUserId());
+		List<Integer> menuIdList = sysUserService.queryAllMenuId(role.getCreateUserId());
 		
 		//判断是否越权
 		if(!menuIdList.containsAll(role.getMenuIdList())){

@@ -53,7 +53,7 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:list")
 	public CommonPageResult<List<SysUserEntity>> list(@RequestBody UserListVo vo){
 		SysUserEntity user = getUser();
-		Long userId = user.getUserId();
+		Integer userId = user.getId();
 		//只有超级管理员，才能查看所有管理员列表
 		if(userId != Constant.SUPER_ADMIN){
 			vo.setCreateUserId(userId);
@@ -87,7 +87,7 @@ public class SysUserController extends AbstractController {
 		String newPassword = new Sha256Hash(form.getNewPassword(), user.getSalt()).toHex();
 				
 		//更新密码
-		boolean flag = sysUserService.updatePassword(user.getUserId(), password, newPassword);
+		boolean flag = sysUserService.updatePassword(user.getId(), password, newPassword);
 		if(!flag){
 			return CommonResult.fail("原密码不正确");
 		}
@@ -104,7 +104,7 @@ public class SysUserController extends AbstractController {
 		SysUserEntity user = sysUserService.getById(userId);
 		
 		//获取用户所属的角色列表
-		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+		List<Integer> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 		user.setRoleIdList(roleIdList);
 		
 		return CommonResult.success(MapUtil.of("user", user));

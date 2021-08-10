@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +117,6 @@ public class SysOssController {
 		//保存文件信息
 		SysOssEntity ossEntity = new SysOssEntity();
 		ossEntity.setUrl(url);
-		ossEntity.setCreateDate(new Date());
 		sysOssService.save(ossEntity);
 
 		return CommonResult.success(MapUtil.of("url", url));

@@ -47,7 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	public IPage<SysUserEntity> queryPage(UserListVo vo) {
 		String username = vo.getUsername();
-		Long createUserId = vo.getCreateUserId();
+		Integer createUserId = vo.getCreateUserId();
 
 		Page<SysUserEntity> pageParam = new Page<>(vo.getPage(), vo.getPageSize());
 		return this.page(
@@ -59,12 +59,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	}
 
 	@Override
-	public List<String> queryAllPerms(Long userId) {
+	public List<String> queryAllPerms(Integer userId) {
 		return baseMapper.queryAllPerms(userId);
 	}
 
 	@Override
-	public List<Long> queryAllMenuId(Long userId) {
+	public List<Integer> queryAllMenuId(Integer userId) {
 		return baseMapper.queryAllMenuId(userId);
 	}
 
@@ -87,7 +87,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		checkRole(user);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		checkRole(user);
 		
 		//保存用户与角色关系
-		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
+		sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	}
 
 	@Override
-	public boolean updatePassword(Long userId, String password, String newPassword) {
+	public boolean updatePassword(Integer userId, String password, String newPassword) {
 		SysUserEntity userEntity = new SysUserEntity();
 		userEntity.setPassword(newPassword);
 		return this.update(userEntity,
