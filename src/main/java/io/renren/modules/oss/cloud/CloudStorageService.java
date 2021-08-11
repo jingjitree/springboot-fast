@@ -8,11 +8,11 @@
 
 package io.renren.modules.oss.cloud;
 
-import io.renren.common.utils.DateUtils;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.InputStream;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -34,7 +34,8 @@ public abstract class CloudStorageService {
         //生成uuid
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         //文件路径
-        String path = DateUtils.format(new Date(), "yyyyMMdd") + "/" + uuid;
+        //String path = DateUtils.format(new Date(), "yyyyMMdd") + "/" + uuid;
+        String path = DateUtil.format(DateUtil.date(), DatePattern.PURE_DATE_PATTERN) + uuid;
 
         if(StringUtils.isNotBlank(prefix)){
             path = prefix + "/" + path;
