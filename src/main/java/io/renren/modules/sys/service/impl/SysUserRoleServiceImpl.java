@@ -16,7 +16,7 @@ import io.renren.modules.sys.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -33,17 +33,16 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserR
 		this.removeByMap(MapUtil.of("user_id", userId));
 
 		if(roleIdList == null || roleIdList.size() == 0){
-			return ;
+			return;
 		}
 
 		//保存用户与角色关系
-		for(Integer roleId : roleIdList){
-			SysUserRoleEntity sysUserRoleEntity = new SysUserRoleEntity();
-			sysUserRoleEntity.setUserId(userId);
-			sysUserRoleEntity.setRoleId(roleId);
-
-			this.save(sysUserRoleEntity);
-		}
+		List<SysUserRoleEntity> roleLists = roleIdList.stream().map(roleId -> {
+			return new SysUserRoleEntity()
+					.setRoleId(roleId)
+					.setUserId(userId);
+		}).collect(Collectors.toList());
+		saveBatch(roleLists);
 	}
 
 	@Override

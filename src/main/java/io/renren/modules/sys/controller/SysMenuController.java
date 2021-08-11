@@ -48,7 +48,6 @@ public class SysMenuController extends AbstractController {
 		log.info("登录user：{}", gson.toJson(user));
 		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(user.getId());
 		Set<String> permissions = shiroService.getUserPermissions(user.getId());
-		//return R.ok().put("menuList", menuList).put("permissions", permissions);
 		Map<String, Object> result = MapUtil.builder(new HashMap<String, Object>())
 				.put("menuList", menuList)
 				.put("permissions", permissions)

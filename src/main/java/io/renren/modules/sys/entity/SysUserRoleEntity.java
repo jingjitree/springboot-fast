@@ -11,6 +11,7 @@ package io.renren.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.renren.common.base.BaseEntity;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 用户与角色对应关系
@@ -18,6 +19,7 @@ import lombok.Data;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
+@Accessors(chain = true)
 @TableName("sys_user_role")
 public class SysUserRoleEntity extends BaseEntity<SysUserRoleEntity> {
 
