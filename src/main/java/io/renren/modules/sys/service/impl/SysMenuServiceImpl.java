@@ -34,7 +34,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	
 	@Override
 	public List<SysMenuEntity> queryListParentId(Integer parentId, List<Integer> menuIdList) {
-		List<SysMenuEntity> menuList = queryListParentId(parentId);
+		List<SysMenuEntity> menuList = this.queryListParentId(parentId);
 		if(menuIdList == null){
 			return menuList;
 		}
@@ -62,12 +62,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	public List<SysMenuEntity> getUserMenuList(Integer userId) {
 		//系统管理员，拥有最高权限
 		if(userId == Constant.SUPER_ADMIN){
-			return getAllMenuList(null);
+			return this.getAllMenuList(null);
 		}
 		
 		//用户菜单列表
 		List<Integer> menuIdList = sysUserService.queryAllMenuId(userId);
-		return getAllMenuList(menuIdList);
+		return this.getAllMenuList(menuIdList);
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	 */
 	private List<SysMenuEntity> getAllMenuList(List<Integer> menuIdList){
 		//查询根菜单列表
-		List<SysMenuEntity> menuList = queryListParentId(0, menuIdList);
+		List<SysMenuEntity> menuList = this.queryListParentId(0, menuIdList);
 		//递归获取子菜单
-		getMenuTreeList(menuList, menuIdList);
+		this.getMenuTreeList(menuList, menuIdList);
 		
 		return menuList;
 	}
@@ -99,7 +99,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		for(SysMenuEntity entity : menuList){
 			//目录
 			if(entity.getType() == Constant.MenuType.CATALOG.getValue()){
-				entity.setList(getMenuTreeList(queryListParentId(entity.getId(), menuIdList), menuIdList));
+				entity.setList(
+						this.getMenuTreeList(this.queryListParentId(entity.getId(), menuIdList), menuIdList)
+				);
 			}
 			subMenuList.add(entity);
 		}
