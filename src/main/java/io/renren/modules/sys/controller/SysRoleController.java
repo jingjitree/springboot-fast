@@ -26,7 +26,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +66,7 @@ public class SysRoleController extends AbstractController {
 	@GetMapping("/select")
 	@RequiresPermissions("sys:role:select")
 	public CommonResult<Map<String, Object>> select(){
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = MapUtil.newHashMap();
 		
 		//如果不是超级管理员，则只查询自己所拥有的角色列表
 		if(getUserId() != Constant.SUPER_ADMIN){

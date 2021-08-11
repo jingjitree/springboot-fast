@@ -9,10 +9,10 @@
 package io.renren.modules.sys.service.impl;
 
 
+import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import io.renren.common.constant.Constant;
-import io.renren.common.utils.MapUtils;
 import io.renren.modules.sys.dao.SysMenuDao;
 import io.renren.modules.sys.entity.SysMenuEntity;
 import io.renren.modules.sys.service.SysMenuService;
@@ -71,11 +71,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public void delete(Integer menuId){
+	public void deleteMenu(Integer menuId){
 		//删除菜单
 		this.removeById(menuId);
 		//删除菜单与角色关联
-		sysRoleMenuService.removeByMap(new MapUtils().put("menu_id", menuId));
+		sysRoleMenuService.removeByMap(MapUtil.of("menu_id", menuId));
 	}
 
 	/**

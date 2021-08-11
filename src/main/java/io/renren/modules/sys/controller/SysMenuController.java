@@ -152,7 +152,7 @@ public class SysMenuController extends AbstractController {
 			return CommonResult.fail("请先删除子菜单或按钮");
 		}
 
-		sysMenuService.delete(menuId);
+		sysMenuService.deleteMenu(menuId);
 
 		return CommonResult.success();
 	}

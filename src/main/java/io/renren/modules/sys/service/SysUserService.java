@@ -52,11 +52,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	void update(SysUserEntity user);
 	
 	/**
-	 * 删除用户
-	 */
-	void deleteBatch(Long[] userIds);
-
-	/**
 	 * 修改密码
 	 * @param userId       用户ID
 	 * @param password     原密码

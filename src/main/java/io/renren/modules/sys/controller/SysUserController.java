@@ -29,6 +29,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -146,7 +147,7 @@ public class SysUserController extends AbstractController {
 	@SysLog("删除用户")
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:user:delete")
-	public CommonResult<?> delete(@RequestBody Long[] userIds){
+	public CommonResult<?> delete(@RequestBody Integer[] userIds){
 		if(ArrayUtils.contains(userIds, 1L)){
 			return CommonResult.fail("系统管理员不能删除");
 		}
@@ -155,7 +156,7 @@ public class SysUserController extends AbstractController {
 			return CommonResult.fail("当前用户不能删除");
 		}
 		
-		sysUserService.deleteBatch(userIds);
+		sysUserService.removeByIds(Arrays.asList(userIds));
 		
 		return CommonResult.success();
 	}

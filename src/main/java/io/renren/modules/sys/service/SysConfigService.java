@@ -23,24 +23,9 @@ public interface SysConfigService extends IService<SysConfigEntity> {
 	IPage<SysConfigEntity> queryPage(ConfigListVo vo);
 	
 	/**
-	 * 保存配置信息
-	 */
-	void saveConfig(SysConfigEntity config);
-	
-	/**
-	 * 更新配置信息
-	 */
-	void update(SysConfigEntity config);
-	
-	/**
 	 * 根据key，更新value
 	 */
 	void updateValueByKey(String key, String value);
-	
-	/**
-	 * 删除配置信息
-	 */
-	void deleteBatch(Long[] ids);
 	
 	/**
 	 * 根据key，获取配置的value值

@@ -23,6 +23,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ public class SysConfigController extends AbstractController {
 	public CommonResult<?> save(@RequestBody SysConfigEntity config){
 		ValidatorUtils.validateEntity(config);
 
-		sysConfigService.saveConfig(config);
+		sysConfigService.save(config);
 		return CommonResult.success();
 	}
 	
@@ -82,7 +83,7 @@ public class SysConfigController extends AbstractController {
 	public CommonResult<?> update(@RequestBody SysConfigEntity config){
 		ValidatorUtils.validateEntity(config);
 		
-		sysConfigService.update(config);
+		sysConfigService.updateById(config);
 		return CommonResult.success();
 	}
 	
@@ -92,8 +93,9 @@ public class SysConfigController extends AbstractController {
 	@SysLog("删除配置")
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:config:delete")
-	public CommonResult<?> delete(@RequestBody Long[] ids){
-		sysConfigService.deleteBatch(ids);
+	public CommonResult<?> delete(@RequestBody Integer[] ids){
+		log.info("删除配置ids：{}", ids);
+		sysConfigService.removeByIds(Arrays.asList(ids));
 		
 		return CommonResult.success();
 	}
