@@ -16,14 +16,11 @@ import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.ShiroService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@CacheConfig(cacheNames = "shiro")
 public class ShiroServiceImpl implements ShiroService {
     @Autowired
     private SysMenuDao sysMenuDao;
@@ -31,7 +28,6 @@ public class ShiroServiceImpl implements ShiroService {
     private SysUserDao sysUserDao;
 
     @Override
-    @Cacheable(key = "'sysUserEntity:' + #p0")
     public Set<String> getUserPermissions(Integer userId) {
         List<String> permsList;
 

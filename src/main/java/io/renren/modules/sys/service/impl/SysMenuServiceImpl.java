@@ -19,6 +19,8 @@ import io.renren.modules.sys.service.SysMenuService;
 import io.renren.modules.sys.service.SysRoleMenuService;
 import io.renren.modules.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.List;
 
 
 @Service
+@CacheConfig(cacheNames = "menuService")
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> implements SysMenuService {
 	@Autowired
 	private SysUserService sysUserService;
@@ -59,6 +62,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
+	@Cacheable(key = "'sysUserMenuList:' + #p0")
 	public List<SysMenuEntity> getUserMenuList(Integer userId) {
 		//系统管理员，拥有最高权限
 		if(userId == Constant.SUPER_ADMIN){
