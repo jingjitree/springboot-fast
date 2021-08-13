@@ -18,7 +18,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ShiroServiceImpl implements ShiroService {
@@ -34,10 +38,7 @@ public class ShiroServiceImpl implements ShiroService {
         //系统管理员，拥有最高权限
         if(userId == Constant.SUPER_ADMIN){
             List<SysMenuEntity> menuList = sysMenuDao.selectList(null);
-            permsList = new ArrayList<>(menuList.size());
-            for(SysMenuEntity menu : menuList){
-                permsList.add(menu.getPerms());
-            }
+            permsList = menuList.stream().map(SysMenuEntity::getPerms).collect(Collectors.toList());
         }else{
             permsList = sysUserDao.queryAllPerms(userId);
         }

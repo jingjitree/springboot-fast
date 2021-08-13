@@ -24,6 +24,9 @@ import java.util.List;
 @TableName("sys_menu")
 public class SysMenuEntity extends BaseEntity<SysMenuEntity> {
 
+	@TableField(value = "id")
+	private Integer menuId;
+
 	/**
 	 * 父菜单ID，一级菜单为0
 	 */
@@ -32,7 +35,7 @@ public class SysMenuEntity extends BaseEntity<SysMenuEntity> {
 	/**
 	 * 父菜单名称
 	 */
-	@TableField(exist=false)
+	@TableField(exist = false)
 	private String parentName;
 
 	/**

@@ -72,8 +72,6 @@ public class OAuth2Realm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String accessToken = (String) token.getPrincipal();
 
-        //根据accessToken，查询用户信息
-        //SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
         //token失效
         String tokenKey = String.format(jwtConstant.getUserTokenKey(), accessToken);
         log.info("登录用户tokenKey：" + tokenKey);
@@ -89,7 +87,6 @@ public class OAuth2Realm extends AuthorizingRealm {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, accessToken, getName());
-        return info;
+        return new SimpleAuthenticationInfo(user, accessToken, getName());
     }
 }
