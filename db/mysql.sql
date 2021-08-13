@@ -1,148 +1,143 @@
 -- 菜单
 CREATE TABLE `sys_menu` (
-  `menu_id` bigint NOT NULL AUTO_INCREMENT,
-  `parent_id` bigint COMMENT '父菜单ID，一级菜单为0',
-  `name` varchar(50) COMMENT '菜单名称',
-  `url` varchar(200) COMMENT '菜单URL',
-  `perms` varchar(500) COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
-  `type` int COMMENT '类型   0：目录   1：菜单   2：按钮',
-  `icon` varchar(50) COMMENT '菜单图标',
-  `order_num` int COMMENT '排序',
-  PRIMARY KEY (`menu_id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='菜单管理';
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `parent_id` int(11) DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
+  `name` varchar(50) DEFAULT NULL COMMENT '菜单名称',
+  `url` varchar(200) DEFAULT NULL COMMENT '菜单URL',
+  `perms` varchar(500) DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
+  `type` int(11) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
+  `order_num` int(11) DEFAULT NULL COMMENT '排序',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单管理'
 
 -- 系统用户
 CREATE TABLE `sys_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `username` varchar(50) NOT NULL COMMENT '用户名',
-  `password` varchar(100) COMMENT '密码',
-  `salt` varchar(20) COMMENT '盐',
-  `email` varchar(100) COMMENT '邮箱',
-  `mobile` varchar(100) COMMENT '手机号',
-  `status` tinyint COMMENT '状态  0：禁用   1：正常',
-  `create_user_id` bigint(20) COMMENT '创建者ID',
-  `create_time` datetime COMMENT '创建时间',
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX (`username`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统用户';
-
--- 系统用户Token
-CREATE TABLE `sys_user_token` (
-  `user_id` bigint(20) NOT NULL,
-  `token` varchar(100) NOT NULL COMMENT 'token',
-  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `token` (`token`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统用户Token';
-
--- 系统验证码
-CREATE TABLE `sys_captcha` (
-  `uuid` char(36) NOT NULL COMMENT 'uuid',
-  `code` varchar(6) NOT NULL COMMENT '验证码',
-  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
-  PRIMARY KEY (`uuid`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统验证码';
+  `password` varchar(100) DEFAULT NULL COMMENT '密码',
+  `salt` varchar(20) DEFAULT NULL COMMENT '盐',
+  `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
+  `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
+  `status` tinyint(4) DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
+  `create_user_id` int(11) DEFAULT NULL COMMENT '创建者ID',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统用户'
 
 -- 角色
 CREATE TABLE `sys_role` (
-  `role_id` bigint NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(100) COMMENT '角色名称',
-  `remark` varchar(100) COMMENT '备注',
-  `create_user_id` bigint(20) COMMENT '创建者ID',
-  `create_time` datetime COMMENT '创建时间',
-  PRIMARY KEY (`role_id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='角色';
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `remark` varchar(100) DEFAULT NULL COMMENT '备注',
+  `create_user_id` int(11) DEFAULT NULL COMMENT '创建者ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色'
 
 -- 用户与角色对应关系
 CREATE TABLE `sys_user_role` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` bigint COMMENT '用户ID',
-  `role_id` bigint COMMENT '角色ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='用户与角色对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户与角色对应关系'
 
 -- 角色与菜单对应关系
 CREATE TABLE `sys_role_menu` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `role_id` bigint COMMENT '角色ID',
-  `menu_id` bigint COMMENT '菜单ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) DEFAULT NULL COMMENT '角色ID',
+  `menu_id` int(11) DEFAULT NULL COMMENT '菜单ID',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='角色与菜单对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色与菜单对应关系'
 
 -- 系统配置信息
 CREATE TABLE `sys_config` (
-	`id` bigint NOT NULL AUTO_INCREMENT,
-	`param_key` varchar(50) COMMENT 'key',
-	`param_value` varchar(2000) COMMENT 'value',
-	`status` tinyint DEFAULT 1 COMMENT '状态   0：隐藏   1：显示',
-	`remark` varchar(500) COMMENT '备注',
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX (`param_key`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统配置信息表';
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `param_key` varchar(50) DEFAULT NULL COMMENT 'key',
+  `param_value` varchar(2000) DEFAULT NULL COMMENT 'value',
+  `status` tinyint(4) DEFAULT '1' COMMENT '状态   0：隐藏   1：显示',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `param_key` (`param_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统配置信息表'
 
 
 -- 系统日志
 CREATE TABLE `sys_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COMMENT '用户名',
-  `operation` varchar(50) COMMENT '用户操作',
-  `method` varchar(200) COMMENT '请求方法',
-  `params` varchar(5000) COMMENT '请求参数',
-  `time` bigint NOT NULL COMMENT '执行时长(毫秒)',
-  `ip` varchar(64) COMMENT 'IP地址',
-  `create_date` datetime COMMENT '创建时间',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
+  `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
+  `params` varchar(5000) DEFAULT NULL COMMENT '请求参数',
+  `time` bigint(20) NOT NULL COMMENT '执行时长(毫秒)',
+  `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='系统日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统日志'
 
 
 -- 文件上传
 CREATE TABLE `sys_oss` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `url` varchar(200) COMMENT 'URL地址',
-  `create_date` datetime COMMENT '创建时间',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `url` varchar(200) DEFAULT NULL COMMENT 'URL地址',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='文件上传';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文件上传'
 
 
 -- 定时任务
 CREATE TABLE `schedule_job` (
-  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '任务id',
   `bean_name` varchar(200) DEFAULT NULL COMMENT 'spring bean名称',
   `params` varchar(2000) DEFAULT NULL COMMENT '参数',
   `cron_expression` varchar(100) DEFAULT NULL COMMENT 'cron表达式',
   `status` tinyint(4) DEFAULT NULL COMMENT '任务状态  0：正常  1：暂停',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`job_id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='定时任务';
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定时任务'
 
 -- 定时任务日志
 CREATE TABLE `schedule_job_log` (
-  `log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志id',
-  `job_id` bigint(20) NOT NULL COMMENT '任务id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '任务日志id',
+  `job_id` int(11) NOT NULL COMMENT '任务id',
   `bean_name` varchar(200) DEFAULT NULL COMMENT 'spring bean名称',
   `params` varchar(2000) DEFAULT NULL COMMENT '参数',
   `status` tinyint(4) NOT NULL COMMENT '任务状态    0：成功    1：失败',
   `error` varchar(2000) DEFAULT NULL COMMENT '失败信息',
   `times` int(11) NOT NULL COMMENT '耗时(单位：毫秒)',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`log_id`),
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
   KEY `job_id` (`job_id`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='定时任务日志';
-
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='定时任务日志'
 
 -- 用户表
 CREATE TABLE `tb_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `mobile` varchar(20) NOT NULL COMMENT '手机号',
-  `password` varchar(64) COMMENT '密码',
-  `create_time` datetime COMMENT '创建时间',
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX (`username`)
-) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8mb4 COMMENT='用户';
+  `password` varchar(64) DEFAULT NULL COMMENT '密码',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户'
 
 
 
