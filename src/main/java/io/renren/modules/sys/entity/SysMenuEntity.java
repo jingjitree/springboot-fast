@@ -11,7 +11,9 @@ package io.renren.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.renren.common.base.BaseEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 @TableName("sys_menu")
 public class SysMenuEntity extends BaseEntity<SysMenuEntity> {
 

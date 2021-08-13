@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,20 +31,17 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuDao, SysRoleM
 	@Transactional(rollbackFor = Exception.class)
 	public void saveOrUpdate(Integer roleId, List<Integer> menuIdList) {
 		//先删除角色与菜单关系
-		deleteBatch(new Integer[]{roleId});
+		this.deleteBatch(new Integer[]{roleId});
 
 		if(menuIdList.size() == 0){
 			return ;
 		}
-
+		List<SysRoleMenuEntity> roleMenus = menuIdList.stream().map(menuId ->
+				new SysRoleMenuEntity()
+						.setMenuId(menuId)
+						.setRoleId(roleId)).collect(Collectors.toList());
 		//保存角色与菜单关系
-		for(Integer menuId : menuIdList){
-			SysRoleMenuEntity sysRoleMenuEntity = new SysRoleMenuEntity();
-			sysRoleMenuEntity.setMenuId(menuId);
-			sysRoleMenuEntity.setRoleId(roleId);
-
-			this.save(sysRoleMenuEntity);
-		}
+		saveBatch(roleMenus);
 	}
 
 	@Override

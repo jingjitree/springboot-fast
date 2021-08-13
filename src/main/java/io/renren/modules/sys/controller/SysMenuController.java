@@ -84,11 +84,11 @@ public class SysMenuController extends AbstractController {
 		List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
 		
 		//添加顶级菜单
-		SysMenuEntity root = new SysMenuEntity();
-		root.setId(0);
-		root.setName("一级菜单");
-		root.setParentId(-1);
-		root.setOpen(true);
+		SysMenuEntity root = new SysMenuEntity()
+				.setMenuId(0)
+				.setName("一级菜单")
+				.setParentId(-1)
+				.setOpen(true);
 		menuList.add(root);
 		
 		return CommonResult.success(MapUtil.of("menuList", menuList));
