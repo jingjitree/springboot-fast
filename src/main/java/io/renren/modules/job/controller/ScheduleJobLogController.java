@@ -47,7 +47,7 @@ public class ScheduleJobLogController {
 	 * 定时任务日志信息
 	 */
 	@RequestMapping("/info/{logId}")
-	public CommonResult<Map<String, Object>> info(@PathVariable("logId") Long logId){
+	public CommonResult<Map<String, Object>> info(@PathVariable("logId") Integer logId){
 		ScheduleJobLogEntity log = scheduleJobLogService.getById(logId);
 		
 		return CommonResult.success(MapUtil.of("log", log));

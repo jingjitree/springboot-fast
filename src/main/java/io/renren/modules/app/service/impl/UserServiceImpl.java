@@ -30,7 +30,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 	}
 
 	@Override
-	public long login(LoginForm form) {
+	public Integer login(LoginForm form) {
 		UserEntity user = queryByMobile(form.getMobile());
 		Assert.isNull(user, "手机号或密码错误");
 

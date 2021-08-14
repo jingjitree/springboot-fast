@@ -99,7 +99,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@GetMapping("/info/{menuId}")
 	@RequiresPermissions("sys:menu:info")
-	public CommonResult<Map<String, Object>> info(@PathVariable("menuId") Long menuId){
+	public CommonResult<Map<String, Object>> info(@PathVariable("menuId") Integer menuId){
 		SysMenuEntity menu = sysMenuService.getById(menuId);
 		return CommonResult.success(MapUtil.of("menu", menu));
 	}

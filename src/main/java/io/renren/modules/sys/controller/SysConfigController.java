@@ -56,7 +56,7 @@ public class SysConfigController extends AbstractController {
 	 */
 	@GetMapping("/info/{id}")
 	@RequiresPermissions("sys:config:info")
-	public CommonResult<Map<String, Object>> info(@PathVariable("id") Long id){
+	public CommonResult<Map<String, Object>> info(@PathVariable("id") Integer id){
 		SysConfigEntity config = sysConfigService.getById(id);
 		return CommonResult.success(MapUtil.of("config", config));
 	}

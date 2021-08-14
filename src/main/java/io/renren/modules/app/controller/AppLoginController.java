@@ -52,7 +52,7 @@ public class AppLoginController {
         ValidatorUtils.validateEntity(form);
 
         //用户登录
-        long userId = userService.login(form);
+        Integer userId = userService.login(form);
 
         //生成token
         String token = jwtUtils.generateToken(userId);

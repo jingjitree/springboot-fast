@@ -23,7 +23,7 @@ public interface SysUserRoleDao extends BaseMapper<SysUserRoleEntity> {
 	/**
 	 * 根据用户ID，获取角色ID列表
 	 */
-	List<Integer> queryRoleIdList(Long userId);
+	List<Integer> queryRoleIdList(Integer userId);
 
 
 	/**

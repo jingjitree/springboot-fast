@@ -27,7 +27,7 @@ public interface SysUserRoleService extends IService<SysUserRoleEntity> {
 	/**
 	 * 根据用户ID，获取角色ID列表
 	 */
-	List<Integer> queryRoleIdList(Long userId);
+	List<Integer> queryRoleIdList(Integer userId);
 
 	/**
 	 * 根据角色ID数组，批量删除

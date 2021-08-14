@@ -51,7 +51,7 @@ public class ScheduleJobController {
 	 */
 	@RequestMapping("/info/{jobId}")
 	@RequiresPermissions("sys:schedule:info")
-	public CommonResult<Map<String, Object>> info(@PathVariable("jobId") Long jobId){
+	public CommonResult<Map<String, Object>> info(@PathVariable("jobId") Integer jobId){
 		ScheduleJobEntity schedule = scheduleJobService.getById(jobId);
 		return CommonResult.success(MapUtil.of("schedule", schedule));
 	}

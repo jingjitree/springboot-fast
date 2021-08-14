@@ -46,7 +46,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserR
 	}
 
 	@Override
-	public List<Integer> queryRoleIdList(Long userId) {
+	public List<Integer> queryRoleIdList(Integer userId) {
 		return baseMapper.queryRoleIdList(userId);
 	}
 
