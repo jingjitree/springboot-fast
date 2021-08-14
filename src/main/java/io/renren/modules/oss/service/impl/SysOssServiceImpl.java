@@ -25,7 +25,7 @@ public class SysOssServiceImpl extends ServiceImpl<SysOssDao, SysOssEntity> impl
 	public IPage<SysOssEntity> queryPage(OssListVo vo) {
 		Page<SysOssEntity> pageParam = new Page<>(vo.getPage(), vo.getPageSize());
 
-		return this.page(pageParam);
+		return page(pageParam);
 	}
 	
 }

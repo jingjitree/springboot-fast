@@ -11,6 +11,7 @@ package io.renren.modules.oss.controller;
 import cn.hutool.core.map.MapUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.renren.common.constant.CommonPageResult;
 import io.renren.common.constant.CommonResult;
 import io.renren.common.constant.ConfigConstant;
@@ -48,8 +49,8 @@ public class SysOssController {
     @Autowired
     private SysConfigService sysConfigService;
 
-    private final static String KEY = ConfigConstant.CLOUD_STORAGE_CONFIG_KEY;
-	
+
+    private final Gson gson = new GsonBuilder().create();
 	/**
 	 * 列表
 	 */
@@ -68,7 +69,8 @@ public class SysOssController {
     @GetMapping("/config")
     @RequiresPermissions("sys:oss:all")
     public CommonResult<Map<String, Object>> config(){
-        CloudStorageConfig config = sysConfigService.getConfigObject(KEY, CloudStorageConfig.class);
+        CloudStorageConfig config =
+				sysConfigService.getConfigObject(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, CloudStorageConfig.class);
 
         return CommonResult.success(MapUtil.of("config", config));
     }
@@ -94,7 +96,7 @@ public class SysOssController {
 			ValidatorUtils.validateEntity(config, QcloudGroup.class);
 		}
 
-        sysConfigService.updateValueByKey(KEY, new Gson().toJson(config));
+        sysConfigService.updateValueByKey(ConfigConstant.CLOUD_STORAGE_CONFIG_KEY, gson.toJson(config));
 
 		return CommonResult.success();
 	}
@@ -115,9 +117,9 @@ public class SysOssController {
 		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
 
 		//保存文件信息
-		SysOssEntity ossEntity = new SysOssEntity();
-		ossEntity.setUrl(url);
-		sysOssService.save(ossEntity);
+		new SysOssEntity()
+				.setUrl(url)
+				.insert();
 
 		return CommonResult.success(MapUtil.of("url", url));
 	}
@@ -128,7 +130,7 @@ public class SysOssController {
 	 */
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:oss:all")
-	public CommonResult<?> delete(@RequestBody Long[] ids){
+	public CommonResult<?> delete(@RequestBody Integer[] ids){
 		sysOssService.removeByIds(Arrays.asList(ids));
 
 		return CommonResult.success();

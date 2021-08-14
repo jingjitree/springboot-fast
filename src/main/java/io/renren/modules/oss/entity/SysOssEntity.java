@@ -10,7 +10,9 @@ package io.renren.modules.oss.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.renren.common.base.BaseEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -20,7 +22,9 @@ import java.io.Serializable;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 @TableName("sys_oss")
 public class SysOssEntity extends BaseEntity<SysOssEntity> implements Serializable {
 	private static final long serialVersionUID = 1L;

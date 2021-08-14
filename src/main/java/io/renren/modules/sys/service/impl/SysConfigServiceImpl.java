@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.renren.common.exception.RRException;
 import io.renren.modules.sys.dao.SysConfigDao;
 import io.renren.modules.sys.entity.SysConfigEntity;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEntity> implements SysConfigService {
 
+	private final Gson gson = new GsonBuilder().create();
 	@Override
 	public IPage<SysConfigEntity> queryPage(ConfigListVo vo) {
 		String paramKey = vo.getParamKey();
@@ -50,9 +52,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	
 	@Override
 	public <T> T getConfigObject(String key, Class<T> clazz) {
-		String value = getValue(key);
+		String value = this.getValue(key);
 		if(StringUtils.isNotBlank(value)){
-			return new Gson().fromJson(value, clazz);
+			return gson.fromJson(value, clazz);
 		}
 
 		try {
