@@ -22,8 +22,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 @TableName("schedule_job")
 public class ScheduleJobEntity extends BaseEntity<ScheduleJobEntity> {
-	private static final long serialVersionUID = 1L;
-	
 	/**
 	 * 任务调度参数key
 	 */

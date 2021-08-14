@@ -55,7 +55,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, Schedule
 		String beanName = vo.getBeanName();
 		Page<ScheduleJobEntity> pageParam = new Page<>(vo.getPage(), vo.getPageSize());
 
-		return this.page(pageParam,
+		return page(pageParam,
 			new QueryWrapper <ScheduleJobEntity>().like(StringUtils.isNotBlank(beanName),"bean_name", beanName)
 		);
 	}
@@ -112,8 +112,8 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, Schedule
         for(Integer jobId : jobIds){
     		ScheduleUtils.pauseJob(scheduler, jobId);
     	}
-        
-    	updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
+
+    	this.updateBatch(jobIds, Constant.ScheduleStatus.PAUSE.getValue());
     }
 
 	@Override
@@ -123,7 +123,7 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobDao, Schedule
     		ScheduleUtils.resumeJob(scheduler, jobId);
     	}
 
-    	updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
+    	this.updateBatch(jobIds, Constant.ScheduleStatus.NORMAL.getValue());
     }
     
 }
